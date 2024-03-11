@@ -2,41 +2,23 @@
 #include <stdio.h>
 
 #include "raylib.h"
-#include "ecs.h"
-
-struct Game {
-
-};
-
-Game game;
-
-void initGame() {
-    const int screenWidth = 400;
-    const int screenHeight = 300;
-    InitWindow(screenWidth, screenHeight, "oh uh");
-}
+#include "game.h"
 
 void mainloop() {
 
-    BeginDrawing();
-    {
-        ClearBackground(RAYWHITE);
+    gGame.input();
+    gGame.update();
+    gGame.render();
 
-        DrawFPS(10, 10);
+    if (!gGame.isRunning) {
+        emscripten_cancel_main_loop();
     }
-    EndDrawing();
 
     if (WindowShouldClose()) {
         emscripten_cancel_main_loop();
     }
 }
 
-void unloadGame() {
-    CloseWindow();
-}
-
 int main(void) {
-    initGame();
     emscripten_set_main_loop(mainloop, 0, 1);
-    unloadGame();
 }

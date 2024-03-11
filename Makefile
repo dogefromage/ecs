@@ -1,12 +1,13 @@
 # https://wiki.libsdl.org/SDL2/README/emscripten#building-your-app
 # https://gist.github.com/wenchy/64db1636845a3da0c4c7
 
-RAYLIB_PATH ?= /home/seb/raylib
+RAYLIB_CPP_PATH := /home/seb/git/raylib-cpp
+RAYLIB_PATH := /home/seb/git/raylib
 
 CC := emcc
-CFLAGS := -Wall -std=c++14 -D_DEFAULT_SOURCE -Wno-missing-braces -Wunused-result -Os -DPLATFORM_WEB
-LFLAGS := -s USE_GLFW=3 -s ASYNCIFY -s TOTAL_MEMORY=67108864 -s FORCE_FILESYSTEM=1 -s 'EXPORTED_FUNCTIONS=["_free","_malloc","_main"]' -s EXPORTED_RUNTIME_METHODS=ccall --preload-file assets
-INCS := -I $(RAYLIB_PATH)/src -I $(RAYLIB_PATH)/src/external -I $(RAYLIB_PATH)/examples/shaders
+CFLAGS := -Wall -std=c++14 -D_DEFAULT_SOURCE -Wno-missing-braces -Wunused-result -DPLATFORM_WEB -O0 -g -gsource-map --source-map-base http://localhost:6969/
+LFLAGS := -s USE_GLFW=3 -s ASYNCIFY -s TOTAL_MEMORY=67108864 -s FORCE_FILESYSTEM=1 -s 'EXPORTED_FUNCTIONS=["_free","_malloc","_main"]' -s EXPORTED_RUNTIME_METHODS=ccall --preload-file assets  -g -gsource-map
+INCS := -I $(RAYLIB_PATH)/src -I $(RAYLIB_PATH)/src/external -I $(RAYLIB_CPP_PATH)/include
 LIBS := -L $(RAYLIB_PATH)/src $(RAYLIB_PATH)/src/web/libraylib.a
 
 TARGET := build/index.html
